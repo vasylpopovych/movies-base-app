@@ -1,5 +1,7 @@
-const App = ():void => {
-  console.log('App working')
-}
+import { moviesList } from './components/moviesList';
 
-export default App
+const App = (): void => {
+    moviesList();
+};
+
+export default App;
