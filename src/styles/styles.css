@@ -4,3 +4,8 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
+
+.poster {
+    height: 300px;
+    width: 222px;
+}
