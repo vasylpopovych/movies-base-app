@@ -19,7 +19,7 @@ export const moviesList = async (moviesData?: []): Promise<void> => {
     if (movies) {
         for (const movie of movies) {
             const movieCard = createMovieCard(
-                movie['backdrop_path'],
+                movie['poster_path'],
                 movie['overview'],
                 movie['release_date']
             );
