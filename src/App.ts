@@ -1,7 +1,11 @@
-import { moviesList } from './components/moviesList';
+import { renderMoviesList } from './components/moviesList';
 
 const App = (): void => {
-    moviesList();
+    //clear movies list
+    const moviesContainer: HTMLDivElement | null =
+        document.querySelector('#film-container');
+    if (moviesContainer) moviesContainer.innerHTML = '<div></div>';
+    renderMoviesList();
 };
 
 export default App;

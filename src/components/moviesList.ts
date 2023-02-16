@@ -2,18 +2,21 @@ import createMovieCard from './movieCard';
 import { moviesService } from '../services/moviesService';
 import { categoriesBar } from './categoriesBar';
 import { searchBar } from './searchBar';
+import { paginationButton } from './paginationButton';
+import { paginationPage } from './paginationButton';
 
-export const moviesList = async (moviesData?: []): Promise<void> => {
-    const moviesContainer: HTMLDivElement | null =
-        document.querySelector('#film-container');
+const moviesContainer: HTMLDivElement | null =
+    document.querySelector('#film-container');
+
+export const renderMoviesList = async (moviesData?: []): Promise<void> => {
+    // here shuld be a method which clearing movies List
     let movies: [] | undefined = moviesData;
 
     //get popular movies as default
     if (moviesData === undefined)
-        movies = await moviesService.getPopularMovies();
-
-    // clear movies container
-    if (moviesContainer) moviesContainer.innerHTML = '<div></div>';
+        movies = await moviesService.getPopularMovies(
+            paginationPage.toString()
+        );
 
     //render movies from API
     if (movies) {
@@ -34,20 +37,35 @@ export const getMovies = async (
 ): Promise<void> => {
     console.log(category);
     let moviesData: Promise<[]> | [] = [];
-    if (name) moviesData = await moviesService.getMoviesByName(name);
+    if (name)
+        moviesData = await moviesService.getMoviesByName(
+            name,
+            paginationPage.toString()
+        );
     switch (category) {
         case 'popular':
-            moviesData = await moviesService.getPopularMovies();
+            moviesData = await moviesService.getPopularMovies(
+                paginationPage.toString()
+            );
             break;
         case 'upcoming':
-            moviesData = await moviesService.getUpcomingMovies();
+            moviesData = await moviesService.getUpcomingMovies(
+                paginationPage.toString()
+            );
             break;
         case 'top_rated':
-            moviesData = await moviesService.getTopRatedMovies();
+            moviesData = await moviesService.getTopRatedMovies(
+                paginationPage.toString()
+            );
             break;
     }
-    moviesList(moviesData);
+    renderMoviesList(moviesData);
+};
+
+export const clearMoviesList = (): void => {
+    if (moviesContainer) moviesContainer.innerHTML = '<div></div>';
 };
 
 categoriesBar();
 searchBar();
+paginationButton();
