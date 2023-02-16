@@ -4,20 +4,23 @@ import { categoriesBar } from './categoriesBar';
 import { searchBar } from './searchBar';
 import { paginationButton } from './paginationButton';
 import { paginationPage } from './paginationButton';
+import { generateRandom } from '../helpers/genereteRandomNumber';
+import Movie from '../types/Movie';
+import { showBanner } from './banner';
 
 const moviesContainer: HTMLDivElement | null =
     document.querySelector('#film-container');
 
-export const renderMoviesList = async (moviesData?: []): Promise<void> => {
+export let randomMovie: Movie[] = [];
+
+export const renderMovies = async (moviesData?: []): Promise<void> => {
     // here shuld be a method which clearing movies List
     let movies: [] | undefined = moviesData;
-
     //get popular movies as default
     if (moviesData === undefined)
         movies = await moviesService.getPopularMovies(
             paginationPage.toString()
         );
-
     //render movies from API
     if (movies) {
         for (const movie of movies) {
@@ -29,13 +32,17 @@ export const renderMoviesList = async (moviesData?: []): Promise<void> => {
             moviesContainer?.append(movieCard);
         }
     }
+    // get and show random movie
+    if (movies) {
+        getRandomMovie(movies);
+        showBanner();
+    }
 };
 
 export const getMovies = async (
     category: string,
     name?: string
 ): Promise<void> => {
-    console.log(category);
     let moviesData: Promise<[]> | [] = [];
     if (name)
         moviesData = await moviesService.getMoviesByName(
@@ -59,11 +66,16 @@ export const getMovies = async (
             );
             break;
     }
-    renderMoviesList(moviesData);
+    renderMovies(moviesData);
 };
 
 export const clearMoviesList = (): void => {
     if (moviesContainer) moviesContainer.innerHTML = '<div></div>';
+};
+
+export const getRandomMovie = (movies: []): void => {
+    const randomMovieIndex = generateRandom();
+    randomMovie = movies[randomMovieIndex];
 };
 
 categoriesBar();
