@@ -7,7 +7,6 @@ class MoviesService {
             const response: Response = await fetch(url);
             const movies = await response.json();
             const mappedData: [] = mapper(movies.results);
-            console.log(mappedData);
             return mappedData;
         } catch (error) {
             console.log(error);
@@ -15,30 +14,30 @@ class MoviesService {
         }
     }
 
-    async getPopularMovies(): Promise<[]> {
+    async getPopularMovies(page: string): Promise<[]> {
         const movies: [] = await this.getMovies(
-            `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+            `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`
         );
         return movies;
     }
 
-    async getUpcomingMovies(): Promise<[]> {
+    async getUpcomingMovies(page: string): Promise<[]> {
         const movies: [] = await this.getMovies(
-            `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
+            `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`
         );
         return movies;
     }
 
-    async getTopRatedMovies(): Promise<[]> {
+    async getTopRatedMovies(page: string): Promise<[]> {
         const movies: [] = await this.getMovies(
-            `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`
+            `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`
         );
         return movies;
     }
 
-    async getMoviesByName(name: string): Promise<[]> {
+    async getMoviesByName(name: string, page: string): Promise<[]> {
         const movies: [] = await this.getMovies(
-            `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${name}&page=1&include_adult=false`
+            `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${name}&page=${page}&include_adult=false`
         );
         return movies;
     }
